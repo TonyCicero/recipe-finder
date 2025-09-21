@@ -61,7 +61,7 @@ export function RecipeDetail({ recipe, onBack, searchTerm }: RecipeDetailProps) 
             <div className="space-y-6">
               <div>
                 <h1 className="text-3xl font-bold mb-2">{recipe.title}</h1>
-                <p className="text-lg text-muted-foreground mb-4">{recipe.instructions}</p>
+                <p className="text-lg text-muted-foreground mb-4">{recipe.instructions.join('. ')}</p>
                 Source: <a href={recipe.url}>{recipe.url}</a>
               </div>
         
