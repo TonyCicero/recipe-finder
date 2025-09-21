@@ -4,9 +4,11 @@ import { RecipeCard } from "./components/recipe-card";
 import { searchRecipes} from "./services/recipe-api";
 import { ChefHat, Loader2 } from "lucide-react";
 import { Recipe } from "./services/recipe-api";
+import { RecipeDetail } from "./components/recipe-detail";
 
 export default function App() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -53,6 +55,25 @@ export default function App() {
     setError(null);
     setHasSearched(false);
   };
+
+  const handleRecipeClick = (recipe: Recipe) => {
+    setSelectedRecipe(recipe);
+  };
+
+  const handleBackToList = () => {
+    setSelectedRecipe(null);
+  };
+
+  // Show recipe detail if a recipe is selected
+  if (selectedRecipe) {
+    return (
+      <RecipeDetail
+        recipe={selectedRecipe}
+        onBack={handleBackToList}
+        searchTerm={searchTerm}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -109,7 +130,11 @@ export default function App() {
         ) : recipes.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {recipes.map((recipe) => (
-              <RecipeCard key={recipe.url} recipe={recipe} />
+              <RecipeCard 
+                key={recipe.url}
+                recipe={recipe}
+                onClick={() => handleRecipeClick(recipe)}
+              />
             ))}
           </div>
         ) : hasSearched && !error ? (

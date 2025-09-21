@@ -7,11 +7,14 @@ import type { Recipe } from "../services/recipe-api";
 
 interface RecipeCardProps {
   recipe: Recipe;
+  onClick?: () => void;
 }
 
-export function RecipeCard({ recipe }: RecipeCardProps) {
+export function RecipeCard({ recipe, onClick }: RecipeCardProps) {
   return (
-    <Card className="h-full transition-transform hover:scale-[1.02]">
+    <Card 
+      className="h-full transition-transform hover:scale-[1.02] cursor-pointer"
+      onClick={onClick}>
       <div className="aspect-[4/3] overflow-hidden rounded-t-lg">
         <ImageWithFallback
           src={recipe.image}

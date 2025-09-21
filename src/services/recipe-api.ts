@@ -3,7 +3,7 @@ interface Recipe {
   title: string;
   ingredients: string[];
   ingredients_no_measurements: string[];
-  instructions: string;
+  instructions: string[];
   matchCount?: number;
   image?: any;
 }
@@ -13,9 +13,12 @@ interface ApiResponse {
   count: number;
 }
 
+/**
+ * Search Recipes.
+ */
 export async function searchRecipes(ingredients: string[]): Promise<ApiResponse> {
   try {
-    const response = await fetch('http://localhost:3000/recipe/search', {
+    const response = await fetch('https://api.tcicerodev.com:3000/recipe/search', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

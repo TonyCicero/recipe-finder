@@ -1,7 +1,7 @@
 {
   "name": "recipe-app",
-  "homepage": "https://tonycicero.github.io",
-  "private": false,
+  "homepage": "https://tonycicero.github.io/recipe-finder",
+  "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
