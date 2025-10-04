@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { SearchBar } from "./components/search-bar";
 import { RecipeCard } from "./components/recipe-card";
-import { searchRecipes} from "./services/recipe-api";
+import { listSuggested, searchRecipes} from "./services/recipe-api";
 import { ChefHat, Loader2 } from "lucide-react";
 import { Recipe } from "./services/recipe-api";
 import { RecipeDetail } from "./components/recipe-detail";
@@ -10,6 +10,7 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [suggestedRecipes, setSuggestedRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
@@ -37,6 +38,23 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+
+
+    const fetchSuggested = async () => {
+      try {
+        const response = await listSuggested();
+        setSuggestedRecipes(response.recipes || []);
+      } catch (error) {
+        setError('Failed to load suggested recipes.');
+        setSuggestedRecipes([]);
+      }
+    }
+    if (!suggestedRecipes?.length) {
+      fetchSuggested();
+    }
+
+    
+    
     const timeoutId = setTimeout(() => {
       const ingredients = searchTerm
         .split(",")
@@ -152,13 +170,34 @@ export default function App() {
             </button>
           </div>
         ) : !hasSearched && !error ? (
-          <div className="text-center py-12">
-            <ChefHat className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">Start searching for recipes</h3>
-            <p className="text-muted-foreground">
-              Enter ingredients in the search bar above to find delicious recipes you can make.
+          
+          <div>
+            <div className="text-center py-12">
+              <ChefHat className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-medium mb-2">Start searching for recipes</h3>
+              <p className="text-muted-foreground">
+                Enter ingredients in the search bar above to find delicious recipes you can make.
+              </p>
+            </div>
+
+            <p className="pb-3">
+              Suggested Recipes:
             </p>
+            {suggestedRecipes?.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {suggestedRecipes.map((recipe) => (
+                  <RecipeCard 
+                    key={recipe.url}
+                    recipe={recipe}
+                    onClick={() => handleRecipeClick(recipe)}
+                  />
+                ))}
+              </div>
+            ) : null}
           </div>
+
+
+
         ) : null}
       </main>
 
