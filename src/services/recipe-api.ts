@@ -18,7 +18,7 @@ interface ApiResponse {
  */
 export async function searchRecipes(ingredients: string[]): Promise<ApiResponse> {
   try {
-    const response = await fetch('https://api.tcicerodev.com:3000/recipe/search', {
+    const response = await fetch('https://node.tcicerodev.com:3000/recipe/search', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
