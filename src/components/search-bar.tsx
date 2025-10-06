@@ -23,7 +23,7 @@ export function SearchBar({ value, onChange, onClear }: SearchBarProps) {
           />
         </div>
         {value && (
-          <Button variant="outline" onClick={onClear}>
+          <Button className="cursor-pointer" variant="outline" onClick={onClear}>
             Clear
           </Button>
         )}
